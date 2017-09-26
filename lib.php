@@ -127,7 +127,7 @@ class cachestore_redis extends cache_store implements cache_is_key_aware, cache_
             return;
         }
         $prefix = !empty($configuration['prefix']) ? $configuration['prefix'] : '';
-        $this->redis = $this->new_redis($configuration['server'], $prefix);
+        $this->redis = $this->new_redis($configuration, $prefix);
     }
 
     /**
@@ -138,9 +138,13 @@ class cachestore_redis extends cache_store implements cache_is_key_aware, cache_
      * @param string $prefix The key prefix
      * @return Redis
      */
-    protected function new_redis($server, $prefix = '') {
+    protected function new_redis($configuration, $prefix = '') {
+        $server = $configuration['server'];
         $redis = new Redis();
         if ($redis->connect($server)) {
+            if(!empty($configuration['password'])){
+                $redis->auth($configuration['password']);
+            }
             $redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_PHP);
             $redis->setOption(Redis::OPT_PREFIX, $prefix.$this->name.'-');
 
