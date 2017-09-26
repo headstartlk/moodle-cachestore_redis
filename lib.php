@@ -417,7 +417,7 @@ class cachestore_redis extends cache_store implements cache_is_key_aware, cache_
      * @return array
      */
     public static function config_get_configuration_array($data) {
-        return array('server' => $data->server, 'prefix' => $data->prefix);
+        return array('server' => $data->server, 'prefix' => $data->prefix, 'password' => $data->password);
     }
 
     /**
@@ -431,6 +431,7 @@ class cachestore_redis extends cache_store implements cache_is_key_aware, cache_
         $data = array();
         $data['server'] = $config['server'];
         $data['prefix'] = !empty($config['prefix']) ? $config['prefix'] : '';
+        $data['prefix'] = !empty($config['password']) ? $config['password'] : '';
         $editform->set_data($data);
     }
 
